@@ -1,0 +1,83 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  MANAGER
+  EMPLOYEE
+}
+
+model User {
+  id              Int        @id @default(autoincrement())
+  name            String
+  email           String     @unique
+  phoneNumber     String?
+  role            Role       @default(EMPLOYEE)
+  addedDate       DateTime   @default(now())
+  lastModified    DateTime   @updatedAt
+
+
+  // Relations
+  tasksManaged    Task[]     @relation("TaskManager")
+  subtasksManaged Subtask[]  @relation("SubtaskManager")
+
+  tasksMember     Task[]     @relation("TaskMembers")
+  subtasksMember  Subtask[]  @relation("SubtaskMembers")
+}
+
+model State {
+  id     Int     @id @default(autoincrement())
+  name   String
+  color  String
+  tasks  Task[]
+}
+
+model Task {
+  id            Int        @id @default(autoincrement())
+  title         String
+  description   String?
+  addedDate     DateTime   @default(now())
+  lastModified  DateTime   @updatedAt
+  beginDate     DateTime?
+  finishDate    DateTime?
+
+  // Relations
+  stateId       Int?
+  state         State?     @relation(fields: [stateId], references: [id])
+
+  managerId     Int?
+  manager       User?      @relation("TaskManager", fields: [managerId], references: [id])
+
+  teamMembers   User[]     @relation("TaskMembers")
+
+  subtasks      Subtask[]
+}
+
+model Subtask {
+  id           Int        @id @default(autoincrement())
+  title        String
+  
+  // Boolean status (false = not finished)
+  status       Boolean    @default(false)
+
+  taskId       Int
+  task         Task       @relation(fields: [taskId], references: [id])
+
+  managerId    Int?
+  manager      User?      @relation("SubtaskManager", fields: [managerId], references: [id])
+
+  teamMembers  User[]     @relation("SubtaskMembers")
+}
