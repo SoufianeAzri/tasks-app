@@ -14,13 +14,13 @@ export class CreateSubtaskDto {
   title: string;
 
   @IsInt()
-  taskId: number;
+  taskId: string;
 
   @IsInt()
-  managerId: number;
+  managerId: string;
 
   @IsOptional()
   @IsArray()
   @ArrayUnique()
-  teamMembersIds?: number[];
+  teamMembersIds?: string[];
 }

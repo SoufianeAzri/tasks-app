@@ -26,14 +26,14 @@ export class CreateTaskDto {
 
   @IsOptional()
   @IsInt()
-  stateId?: number;
+  stateId?: string;
 
   @IsOptional()
   @IsInt()
-  managerId?: number;
+  managerId?: string;
 
   @IsOptional()
   @IsArray()
   @ArrayUnique()
-  teamMembersIds?: number[];
+  teamMembersIds?: string[];
 }

@@ -18,16 +18,16 @@ export class TasksController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.tasksService.findOne(+id);
+    return this.tasksService.findOne(id);
   }
 
   @Put(':id')
   update(@Param('id') id: string, @Body() data: Partial<CreateTaskDto>) {
-    return this.tasksService.update(+id, data);
+    return this.tasksService.update(id, data);
   }
 
   @Delete(':id')
   delete(@Param('id') id: string) {
-    return this.tasksService.delete(+id);
+    return this.tasksService.delete(id);
   }
 }

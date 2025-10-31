@@ -40,14 +40,14 @@ export class TasksService {
     });
   }
 
-  async findOne(id: number) {
+  async findOne(id: string) {
     return this.databaseService.task.findUnique({
       where: { id },
       select: this.taskSelect(),
     });
   }
 
-  async update(id: number, data: Partial<CreateTaskDto>) {
+  async update(id: string, data: Partial<CreateTaskDto>) {
     const { stateId, managerId, teamMembersIds, ...rest } = data;
 
     return this.databaseService.task.update({
@@ -68,7 +68,7 @@ export class TasksService {
     });
   }
 
-  async delete(id: number) {
+  async delete(id: string) {
     return this.databaseService.task.delete({
       where: { id },
     });

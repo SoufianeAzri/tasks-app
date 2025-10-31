@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { DatabaseService } from 'src/database/database.service';
-import { Prisma } from 'generated/prisma';
 
 @Injectable()
 export class StatesService {
@@ -14,11 +13,11 @@ export class StatesService {
     return this.databaseService.state.findMany();
   }
 
-  update(id: number, data: { name?: string; color?: string }) {
+  update(id: string, data: { name?: string; color?: string }) {
     return this.databaseService.state.update({ where: { id }, data });
   }
 
-  delete(id: number) {
+  delete(id: string) {
     return this.databaseService.state.delete({ where: { id } });
   }
 }

@@ -17,11 +17,11 @@ export class StatesController {
 
   @Put(':id')
   update(@Param('id') id: string, @Body() data: any) {
-    return this.statesService.update(+id, data);
+    return this.statesService.update(id, data);
   }
 
   @Delete(':id')
   delete(@Param('id') id: string) {
-    return this.statesService.delete(+id);
+    return this.statesService.delete(id);
   }
 }

@@ -1,6 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
 import { DatabaseService } from 'src/database/database.service';
 import { Prisma } from 'generated/prisma';
 
@@ -17,14 +15,14 @@ export class UsersService {
   }
 
   // ✅ Get single user (only user info)
-  findOne(id: number) {
+  findOne(id: string) {
     return this.databaseService.user.findUnique({
       where: { id },
     });
   }
 
   // ✅ Update user
-  update(id: number, data: any) {
+  update(id: string, data: any) {
     return this.databaseService.user.update({
       where: { id },
       data,
@@ -32,7 +30,7 @@ export class UsersService {
   }
 
   // ✅ Delete user
-  delete(id: number) {
+  delete(id: string) {
     return this.databaseService.user.delete({
       where: { id },
     });

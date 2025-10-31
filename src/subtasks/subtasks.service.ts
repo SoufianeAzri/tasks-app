@@ -30,14 +30,14 @@ export class SubtasksService {
     });
   }
 
-  async findOne(id: number) {
+  async findOne(id: string) {
     return this.databaseService.subtask.findUnique({
       where: { id },
       select: this.subtaskSelect(),
     });
   }
 
-  async update(id: number, dto: UpdateSubtaskDto) {
+  async update(id: string, dto: UpdateSubtaskDto) {
     const { teamMembersIds, ...data } = dto;
 
     const updated = await this.databaseService.subtask.update({
@@ -55,7 +55,7 @@ export class SubtasksService {
   }
 
   // 🟩 NEW: change status (true/false)
-  async changeStatus(id: number, status: boolean) {
+  async changeStatus(id: string, status: boolean) {
     const updated = await this.databaseService.subtask.update({
       where: { id },
       data: { status },
@@ -64,7 +64,7 @@ export class SubtasksService {
     return updated;
   }
 
-  async remove(id: number) {
+  async remove(id: string) {
     return this.databaseService.subtask.delete({
       where: { id },
     });

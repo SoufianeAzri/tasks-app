@@ -21,7 +21,7 @@ enum Role {
 }
 
 model User {
-  id              Int        @id @default(autoincrement())
+  id              String   @id @default(uuid())
   name            String
   email           String     @unique
   phoneNumber     String?
@@ -39,14 +39,14 @@ model User {
 }
 
 model State {
-  id     Int     @id @default(autoincrement())
+  id     String   @id @default(uuid())
   name   String
   color  String
   tasks  Task[]
 }
 
 model Task {
-  id            Int        @id @default(autoincrement())
+  id            String   @id @default(uuid())
   title         String
   description   String?
   addedDate     DateTime   @default(now())
@@ -55,10 +55,10 @@ model Task {
   finishDate    DateTime?
 
   // Relations
-  stateId       Int?
+  stateId       String?
   state         State?     @relation(fields: [stateId], references: [id])
 
-  managerId     Int?
+  managerId     String?
   manager       User?      @relation("TaskManager", fields: [managerId], references: [id])
 
   teamMembers   User[]     @relation("TaskMembers")
@@ -67,16 +67,16 @@ model Task {
 }
 
 model Subtask {
-  id           Int        @id @default(autoincrement())
+  id           String   @id @default(uuid())
   title        String
   
   // Boolean status (false = not finished)
   status       Boolean    @default(false)
 
-  taskId       Int
+  taskId       String
   task         Task       @relation(fields: [taskId], references: [id])
 
-  managerId    Int?
+  managerId    String?
   manager      User?      @relation("SubtaskManager", fields: [managerId], references: [id])
 
   teamMembers  User[]     @relation("SubtaskMembers")
