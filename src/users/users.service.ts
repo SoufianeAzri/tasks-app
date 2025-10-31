@@ -29,6 +29,28 @@ export class UsersService {
     });
   }
 
+  async searchByName(name: string) {
+    if (!name) {
+      return [];
+    }
+
+    return this.databaseService.user.findMany({
+      where: {
+        name: {
+          contains: name,
+          mode: 'insensitive', // case-insensitive search
+        },
+      },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        phoneNumber: true,
+        role: true,
+      },
+    });
+  }
+
   // ✅ Delete user
   delete(id: string) {
     return this.databaseService.user.delete({
