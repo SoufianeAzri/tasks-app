@@ -10,7 +10,14 @@ export class UsersService {
   }
 
   // ✅ Get all users (only user info)
-  findAll() {
+  findAll(name?: string) {
+    if (name) {
+      return this.databaseService.user.findMany({
+        where: {
+          name,
+        },
+      });
+    }
     return this.databaseService.user.findMany();
   }
 

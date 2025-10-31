@@ -23,8 +23,13 @@ export class UsersController {
   }
 
   @Get()
-  findAll() {
-    return this.usersService.findAll();
+  findAll(@Query('name') name?: string) {
+    return this.usersService.findAll(name);
+  }
+
+  @Get('search')
+  searchUsers(@Query('name') name: string) {
+    return this.usersService.searchByName(name);
   }
 
   @Get(':id')
@@ -38,12 +43,6 @@ export class UsersController {
     @Body() updateUserDto: Prisma.UserUpdateInput,
   ) {
     return this.usersService.update(id, updateUserDto);
-  }
-
-  // ✅ Search users by name
-  @Get('search')
-  async searchUsers(@Query('name') name: string) {
-    return this.usersService.searchByName(name);
   }
 
   @Delete(':id')
