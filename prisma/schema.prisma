@@ -40,8 +40,8 @@ model User {
 
 model State {
   id     String   @id @default(uuid())
-  name   String
-  color  String
+  name   String   @unique
+  color  String   @unique
   tasks  Task[]
 }
 
