@@ -20,6 +20,12 @@ enum Role {
   EMPLOYEE
 }
 
+enum Periorite {
+  HAUT
+  MOYENNE
+  BAS
+}
+
 model User {
   id           String   @id @default(uuid())
   name         String
@@ -57,6 +63,7 @@ model Task {
   lastModified DateTime  @updatedAt
   beginDate    DateTime?
   finishDate   DateTime?
+  periorite    Periorite     @default(HAUT)  
 
   // Relations
   stateId String?
