@@ -15,6 +15,7 @@ export class TasksService {
       finishDate,
       stateId,
       managerId,
+      periorite,
       teamMembersIds = [],
     } = data;
 
@@ -22,6 +23,7 @@ export class TasksService {
       data: {
         title,
         description,
+        periorite,
         beginDate: beginDate ? new Date(beginDate) : undefined,
         finishDate: finishDate ? new Date(finishDate) : undefined,
         state: stateId ? { connect: { id: stateId } } : undefined,
