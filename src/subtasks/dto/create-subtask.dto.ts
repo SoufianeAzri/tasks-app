@@ -13,10 +13,10 @@ export class CreateSubtaskDto {
   @IsNotEmpty()
   title: string;
 
-  @IsInt()
+  @IsString()
   taskId: string;
 
-  @IsInt()
+  @IsString()
   managerId: string;
 
   @IsOptional()

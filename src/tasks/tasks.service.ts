@@ -97,30 +97,34 @@ export class TasksService {
         },
       },
       manager: {
-        select: {
-          id: true,
-          name: true,
-          email: true,
-          phoneNumber: true,
-          role: true,
-        },
+        select: this.memberSelect(),
       },
       teamMembers: {
-        select: {
-          id: true,
-          name: true,
-          email: true,
-          phoneNumber: true,
-          role: true,
-        },
+        select: this.memberSelect(),
       },
       subtasks: {
         select: {
           id: true,
           title: true,
           status: true,
+          teamMembers: {
+            select: this.memberSelect(),
+          },
+          manager: {
+            select: this.memberSelect(),
+          },
         },
       },
+    };
+  }
+
+  private memberSelect() {
+    return {
+      id: true,
+      name: true,
+      email: true,
+      // phoneNumber: true,
+      // role: true,
     };
   }
 }

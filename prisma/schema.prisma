@@ -63,7 +63,7 @@ model Task {
   lastModified DateTime  @updatedAt
   beginDate    DateTime?
   finishDate   DateTime?
-  periorite    Periorite     @default(HAUT)  
+  periorite    Periorite @default(HAUT)
 
   // Relations
   stateId String?
@@ -78,8 +78,10 @@ model Task {
 }
 
 model Subtask {
-  id    String @id @default(uuid())
-  title String
+  id           String   @id @default(uuid())
+  title        String
+  addedDate    DateTime @default(now())
+  lastModified DateTime @updatedAt
 
   // Boolean status (false = not finished)
   status Boolean @default(false)
