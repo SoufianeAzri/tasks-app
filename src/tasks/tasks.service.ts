@@ -86,6 +86,7 @@ export class TasksService {
       finishDate: true,
       stateId: true,
       managerId: true,
+      periorite: true,
       state: {
         select: {
           id: true,
