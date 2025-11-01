@@ -50,7 +50,7 @@ export class TasksService {
   }
 
   async update(id: string, data: Partial<CreateTaskDto>) {
-    const { stateId, managerId, teamMembersIds, ...rest } = data;
+    const { stateId, managerId, teamMembersIds, periorite, ...rest } = data;
 
     return this.databaseService.task.update({
       where: { id },
