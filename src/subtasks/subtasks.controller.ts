@@ -6,7 +6,6 @@ import {
   Patch,
   Param,
   Delete,
-  ParseIntPipe,
 } from '@nestjs/common';
 import { SubtasksService } from './subtasks.service';
 import { CreateSubtaskDto } from './dto/create-subtask.dto';
@@ -28,26 +27,25 @@ export class SubtasksController {
   }
 
   @Get(':id')
-  findOne(@Param('id', ParseIntPipe) id: string) {
+  findOne(@Param('id') id: string) {
     return this.subtasksService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id', ParseIntPipe) id: string, @Body() dto: UpdateSubtaskDto) {
+  update(@Param('id') id: string, @Body() dto: UpdateSubtaskDto) {
     return this.subtasksService.update(id, dto);
   }
 
-  // 🟩 NEW: change subtask status
   @Patch(':id/status')
   changeStatus(
-    @Param('id', ParseIntPipe) id: string,
+    @Param('id') id: string,
     @Body() dto: ChangeSubtaskStatusDto,
   ) {
     return this.subtasksService.changeStatus(id, dto.status);
   }
 
   @Delete(':id')
-  remove(@Param('id', ParseIntPipe) id: string) {
+  remove(@Param('id') id: string) {
     return this.subtasksService.remove(id);
   }
 }
