@@ -6,30 +6,32 @@ import {
   IsArray,
   ArrayNotEmpty,
   ArrayUnique,
+  isString,
+  IsEnum,
 } from 'class-validator';
 
 export class CreateTaskDto {
   @IsString()
   title: string;
 
-  @IsOptional()
   @IsString()
-  description?: string;
+  description: string;
 
-  @IsOptional()
+  @IsEnum(['HAUT', 'MOYENNE', 'BAS'], {
+    message: 'Valid role required',
+  })
+  periorite: 'HAUT' | 'MOYENNE' | 'BAS';
+
   @IsDateString()
-  beginDate?: string;
+  beginDate: string;
 
-  @IsOptional()
   @IsDateString()
-  finishDate?: string;
+  finishDate: string;
 
-  @IsOptional()
-  @IsInt()
-  stateId?: string;
+  @IsString()
+  stateId: string;
 
-  @IsOptional()
-  @IsInt()
+  @IsString()
   managerId?: string;
 
   @IsOptional()
