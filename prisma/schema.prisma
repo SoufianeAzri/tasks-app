@@ -21,63 +21,67 @@ enum Role {
 }
 
 model User {
-  id              String   @id @default(uuid())
-  name            String
-  email           String     @unique
-  phoneNumber     String?
-  role            Role       @default(EMPLOYEE)
-  addedDate       DateTime   @default(now())
-  lastModified    DateTime   @updatedAt
-
+  id           String   @id @default(uuid())
+  name         String
+  email        String   @unique
+  phoneNumber  String?
+  role         Role     @default(EMPLOYEE)
+  addedDate    DateTime @default(now())
+  lastModified DateTime @updatedAt
 
   // Relations
-  tasksManaged    Task[]     @relation("TaskManager")
-  subtasksManaged Subtask[]  @relation("SubtaskManager")
+  tasksManaged    Task[]    @relation("TaskManager")
+  subtasksManaged Subtask[] @relation("SubtaskManager")
 
-  tasksMember     Task[]     @relation("TaskMembers")
-  subtasksMember  Subtask[]  @relation("SubtaskMembers")
+  tasksMember    Task[]    @relation("TaskMembers")
+  subtasksMember Subtask[] @relation("SubtaskMembers")
 }
 
 model State {
-  id     String   @id @default(uuid())
-  name   String   @unique
-  color  String   @unique
-  tasks  Task[]
+  id    String @id @default(uuid())
+  name  String @unique
+  color String @unique
+
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  tasks Task[]
 }
 
 model Task {
-  id            String   @id @default(uuid())
-  title         String
-  description   String?
-  addedDate     DateTime   @default(now())
-  lastModified  DateTime   @updatedAt
-  beginDate     DateTime?
-  finishDate    DateTime?
+  id           String    @id @default(uuid())
+  title        String
+  description  String?
+  addedDate    DateTime  @default(now())
+  lastModified DateTime  @updatedAt
+  beginDate    DateTime?
+  finishDate   DateTime?
 
   // Relations
-  stateId       String?
-  state         State?     @relation(fields: [stateId], references: [id])
+  stateId String?
+  state   State?  @relation(fields: [stateId], references: [id])
 
-  managerId     String?
-  manager       User?      @relation("TaskManager", fields: [managerId], references: [id])
+  managerId String?
+  manager   User?   @relation("TaskManager", fields: [managerId], references: [id])
 
-  teamMembers   User[]     @relation("TaskMembers")
+  teamMembers User[] @relation("TaskMembers")
 
-  subtasks      Subtask[]
+  subtasks Subtask[]
 }
 
 model Subtask {
-  id           String   @id @default(uuid())
-  title        String
-  
+  id    String @id @default(uuid())
+  title String
+
   // Boolean status (false = not finished)
-  status       Boolean    @default(false)
+  status Boolean @default(false)
 
-  taskId       String
-  task         Task       @relation(fields: [taskId], references: [id])
+  taskId String
+  task   Task   @relation(fields: [taskId], references: [id])
 
-  managerId    String?
-  manager      User?      @relation("SubtaskManager", fields: [managerId], references: [id])
+  managerId String?
+  manager   User?   @relation("SubtaskManager", fields: [managerId], references: [id])
 
-  teamMembers  User[]     @relation("SubtaskMembers")
+  teamMembers User[] @relation("SubtaskMembers")
 }
