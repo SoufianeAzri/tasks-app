@@ -1,18 +1,34 @@
-import { Controller, Get, Post, Body, Param, Delete, Put } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  Delete,
+  Put,
+  Patch,
+} from '@nestjs/common';
 import { StatesService } from './states.service';
+import { ReorderStatesDto } from './dto/reorder-states.dto';
+import { CreateStateDto } from './dto/create-state.dto';
 
 @Controller('states')
 export class StatesController {
   constructor(private readonly statesService: StatesService) {}
 
   @Post()
-  create(@Body() data: { name: string; color: string }) {
+  create(@Body() data: CreateStateDto) {
     return this.statesService.create(data);
   }
 
   @Get()
   findAll() {
     return this.statesService.findAll();
+  }
+
+  @Patch('reorder')
+  async reorder(@Body() dto: ReorderStatesDto) {
+    return this.statesService.reorderStatesManual(dto.statesIds);
   }
 
   @Put(':id')

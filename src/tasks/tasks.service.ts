@@ -107,6 +107,7 @@ export class TasksService {
           id: true,
           title: true,
           status: true,
+          lastModified: true,
           teamMembers: {
             select: this.memberSelect(),
           },

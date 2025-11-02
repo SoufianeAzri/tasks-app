@@ -32,6 +32,11 @@ export class UsersController {
     return this.usersService.searchByName(name);
   }
 
+  @Get('related-to-tasks')
+  async getUsersRelatedToTasks() {
+    return this.usersService.findAllRelatedToTasks();
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.usersService.findOne(id);
