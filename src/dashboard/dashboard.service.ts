@@ -10,6 +10,7 @@ import {
   endOfYear,
 } from 'date-fns';
 import { fr } from 'date-fns/locale';
+import { taskSelect } from 'src/helpers';
 
 @Injectable()
 export class DashboardService {
@@ -82,9 +83,15 @@ export class DashboardService {
 
     // --- 3️⃣ Recent Users
     const recentUsers = await this.databaseService.user.findMany({
-      take: 5,
+      take: 3,
       orderBy: { addedDate: 'desc' },
-      select: { id: true, name: true, email: true, addedDate: true },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        addedDate: true,
+        role: true,
+      },
     });
 
     // --- 4️⃣ State Distribution (%)
@@ -157,6 +164,12 @@ export class DashboardService {
     // Final formatted result
     const statesStats = Object.values(stateMap);
 
+    const recentTasks = await this.databaseService.task.findMany({
+      take: 3,
+      orderBy: { addedDate: 'desc' },
+      select: taskSelect(),
+    });
+
     // --- Return all dashboard data
     return {
       users: {
@@ -175,6 +188,7 @@ export class DashboardService {
       stateDistribution,
       recentUsers,
       statesStats,
+      recentTasks,
     };
   }
 }
