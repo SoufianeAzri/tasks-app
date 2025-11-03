@@ -94,3 +94,17 @@ model Subtask {
 
   teamMembers User[] @relation("SubtaskMembers")
 }
+
+model Activity {
+  id          String   @id @default(uuid())
+  userId      String
+  entityType  String   @default("TASK")
+  entityId    String
+  description String
+  entityTitle String   @default("")
+  type        Int
+  isOldState  Boolean  @default(false)
+  oldState    String?
+  newState    String?
+  createdAt   DateTime @default(now())
+}

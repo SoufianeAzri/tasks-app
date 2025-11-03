@@ -2,10 +2,15 @@ import { Injectable } from '@nestjs/common';
 import { DatabaseService } from 'src/database/database.service';
 import { Prisma } from 'generated/prisma';
 import { CreateTaskDto } from './dto/create-task.dto';
+import { ActivitiesService } from 'src/activities/activities.service';
+import { buildTaskActivity } from 'src/activities/utils/activity.util';
 
 @Injectable()
 export class TasksService {
-  constructor(private readonly databaseService: DatabaseService) {}
+  constructor(
+    private readonly databaseService: DatabaseService,
+    private readonly activityService: ActivitiesService,
+  ) {}
 
   async create(data: CreateTaskDto) {
     const {
@@ -19,7 +24,7 @@ export class TasksService {
       teamMembersIds = [],
     } = data;
 
-    return this.databaseService.task.create({
+    const task = await this.databaseService.task.create({
       data: {
         title,
         description,
@@ -34,6 +39,18 @@ export class TasksService {
       },
       select: this.taskSelect(),
     });
+
+    const activity = buildTaskActivity('CREATE', undefined, task);
+
+    if (activity !== null) {
+      await this.activityService.logActivity({
+        userId: '0',
+        entityId: task.id,
+        ...activity,
+      });
+    }
+
+    return task;
   }
 
   async findAll() {
@@ -52,7 +69,12 @@ export class TasksService {
   async update(id: string, data: Partial<CreateTaskDto>) {
     const { stateId, managerId, teamMembersIds, ...rest } = data;
 
-    return this.databaseService.task.update({
+    const oldTask = await this.databaseService.task.findUnique({
+      where: { id },
+      select: this.taskSelect(),
+    });
+
+    const updatedTask = await this.databaseService.task.update({
       where: { id },
       data: {
         ...rest,
@@ -68,6 +90,18 @@ export class TasksService {
         teamMembers: true,
       },
     });
+
+    const activity = buildTaskActivity('UPDATE', oldTask, updatedTask);
+
+    if (activity && oldTask) {
+      await this.activityService.logActivity({
+        userId: '0',
+        entityId: oldTask?.id,
+        ...activity,
+      });
+    }
+
+    return updatedTask;
   }
 
   async delete(id: string) {
