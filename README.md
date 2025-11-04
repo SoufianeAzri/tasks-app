@@ -64,11 +64,11 @@
     2️⃣ Install dependencies
     npm install
 
-    3️⃣ Configure environment variables
+    3️⃣ Configure environment variables (you have to contact me if you want connection string to my database)
 
     Create a .env file in the root directory and add this database URL:
 
-    DATABASE_URL="postgresql://neondb_owner:npg_0DJ8lAxwctmX@ep-purple-moon-agch1xpk-pooler.c-2.eu-central-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
+    DATABASE_URL="<--Contact me via email -->"
 
     ALLOWED_ORIGINS=http://localhost:3000,http://localhost:3001,http://localhost:5000
 
@@ -101,3 +101,10 @@
     | `npm run build`      | Build the app for production         |
     | `npm run start:prod` | Start the app in production mode     |
     | `npx prisma studio`  | Open Prisma GUI                      |
+
+
+🧑‍💻 Author
+
+    Soufiane Azri
+    📧 email:  [soufianeazri02@gmail.com]
+    💻 GitHub: [https://github.com/SoufianeAzri]
