@@ -105,12 +105,27 @@ export class TasksService {
   }
 
   async delete(id: string) {
+    const oldTask = await this.databaseService.task.findUnique({
+      where: { id },
+      select: this.taskSelect(),
+    });
+
+    const activity = buildTaskActivity('DELETE', oldTask, undefined );
+
+    if (activity !== null && oldTask) {
+      await this.activityService.logActivity({
+        userId: '0',
+        entityId: oldTask.id,
+        ...activity,
+      });
+    }
+
     return this.databaseService.task.delete({
       where: { id },
     });
   }
 
-  // 👇 Helper to define consistent response shape
+  // Helper to define consistent response shape
   private taskSelect() {
     return {
       id: true,

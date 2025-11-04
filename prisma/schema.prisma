@@ -87,7 +87,7 @@ model Subtask {
   status Boolean @default(false)
 
   taskId String
-  task   Task   @relation(fields: [taskId], references: [id])
+  task   Task   @relation(fields: [taskId], references: [id], onDelete: Cascade)
 
   managerId String?
   manager   User?   @relation("SubtaskManager", fields: [managerId], references: [id])
