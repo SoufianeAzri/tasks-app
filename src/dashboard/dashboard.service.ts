@@ -10,7 +10,7 @@ import {
   endOfYear,
 } from 'date-fns';
 import { fr } from 'date-fns/locale';
-import { taskSelect } from 'src/helpers';
+import { taskSelect } from 'src/helpers/select.helper';
 
 @Injectable()
 export class DashboardService {
