@@ -13,7 +13,7 @@ export class SubtasksService {
     const subtask = await this.databaseService.subtask.create({
       data: {
         ...data,
-        status: false, // default
+        status: false,
         teamMembers: teamMembersIds
           ? { connect: teamMembersIds.map((id) => ({ id })) }
           : undefined,
@@ -54,7 +54,7 @@ export class SubtasksService {
     return updated;
   }
 
-  // 🟩 NEW: change status (true/false)
+  // change status
   async changeStatus(id: string, status: boolean) {
     const updated = await this.databaseService.subtask.update({
       where: { id },

@@ -77,10 +77,10 @@ export class StatesService {
       );
     }
 
-    // Delete the state
+    // delete the state
     await this.databaseService.state.delete({ where: { id } });
 
-    // Reorder remaining states
+    // reorder remaining states
     await this.reorderStates();
   }
 

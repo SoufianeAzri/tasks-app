@@ -20,7 +20,7 @@ export class UsersService {
     return this.databaseService.user.create({ data: createUserDto });
   }
 
-  // ✅ Get all users (only user info)
+  // get all users 
   findAll(name?: string) {
     if (name) {
       return this.databaseService.user.findMany({
@@ -32,14 +32,14 @@ export class UsersService {
     return this.databaseService.user.findMany();
   }
 
-  // ✅ Get single user (only user info)
+  // get single user 
   findOne(id: string) {
     return this.databaseService.user.findUnique({
       where: { id },
     });
   }
 
-  // ✅ Update user
+  //  update user
   update(id: string, data: any) {
     return this.databaseService.user.update({
       where: { id },
@@ -48,18 +48,18 @@ export class UsersService {
   }
 
   async findAllRelatedToTasks() {
-    // Get all users that are either managers or task members
+    // get all users that are either managers or task members
     const users = await this.databaseService.user.findMany({
       where: {
         OR: [
           {
             tasksManaged: {
-              some: {}, // means user manages at least one task
+              some: {}, 
             },
           },
           {
             tasksMember: {
-              some: {}, // means user is a member of at least one task
+              some: {}, 
             },
           },
         ],
@@ -78,7 +78,7 @@ export class UsersService {
       where: {
         name: {
           contains: name,
-          mode: 'insensitive', // case-insensitive search
+          mode: 'insensitive',
         },
       },
       select: {
@@ -91,7 +91,7 @@ export class UsersService {
     });
   }
 
-  // ✅ Delete user
+  // delete user
   async delete(id: string) {
     const user = await this.databaseService.user.findUnique({
       where: { id: id },
@@ -108,7 +108,7 @@ export class UsersService {
       },
     });
 
-    // Check if the user is assigned as manager or team member in subtasks
+    // check if the user is assigned as manager or team member in subtasks
     const assignedToSubtasks = await this.databaseService.subtask.findFirst({
       where: {
         OR: [{ managerId: id }, { teamMembers: { some: { id: id } } }],
@@ -122,7 +122,7 @@ export class UsersService {
       );
     }
 
-    // Otherwise, safe to delete
+    // safe to delete
     await this.databaseService.user.delete({
       where: { id: id },
     });

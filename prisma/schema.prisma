@@ -35,7 +35,7 @@ model User {
   addedDate    DateTime @default(now())
   lastModified DateTime @updatedAt
 
-  // Relations
+  // relations
   tasksManaged    Task[]    @relation("TaskManager")
   subtasksManaged Subtask[] @relation("SubtaskManager")
 
@@ -65,7 +65,7 @@ model Task {
   finishDate   DateTime?
   periorite    Periorite @default(HAUT)
 
-  // Relations
+  // relations
   stateId String?
   state   State?  @relation(fields: [stateId], references: [id])
 
@@ -83,7 +83,6 @@ model Subtask {
   addedDate    DateTime @default(now())
   lastModified DateTime @updatedAt
 
-  // Boolean status (false = not finished)
   status Boolean @default(false)
 
   taskId String

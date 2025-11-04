@@ -34,7 +34,7 @@ export class DashboardService {
       this.databaseService.task.count(),
     ]);
 
-    // --- Counts Percentage (users, tasks, states)
+    // counts percentage (users, tasks, states)
     const [usersThis, usersLast, tasksThis, tasksLast, statesThis, statesLast] =
       await Promise.all([
         this.databaseService.user.count({
@@ -57,7 +57,7 @@ export class DashboardService {
         }),
       ]);
 
-    // --- 2️⃣ Tasks grouped by state
+    // tasks grouped by state
     const tasksByState = await this.databaseService.task.groupBy({
       by: ['stateId'],
       _count: { stateId: true },
@@ -81,7 +81,7 @@ export class DashboardService {
       };
     });
 
-    // --- 3️⃣ Recent Users
+    // recent users
     const recentUsers = await this.databaseService.user.findMany({
       take: 3,
       orderBy: { addedDate: 'desc' },
@@ -94,7 +94,7 @@ export class DashboardService {
       },
     });
 
-    // --- 4️⃣ State Distribution (%)
+    //  state distribution (%)
     const totalTasks = await this.databaseService.task.count();
     const stateDistribution = tasksByStateWithName.map((s) => ({
       state: s.state,
@@ -103,13 +103,13 @@ export class DashboardService {
         totalTasks > 0 ? ((s.count / totalTasks) * 100).toFixed(1) + '%' : '0%',
     }));
 
-    // --- 5️⃣ Monthly state-task breakdown (converted to statesStats format)
+    // monthly state-task breakdown
     const monthsRange = eachMonthOfInterval({
       start: startOfYear(now), // ✅ start from January
       end: endOfYear(now), // ✅ end in December
     });
 
-    // Prepare a map of all states
+
     const statesData = await this.databaseService.state.findMany({
       select: { id: true, name: true, color: true },
     });
@@ -119,7 +119,7 @@ export class DashboardService {
       { state: string; color: string; monthsTasksData: number[] }
     > = {};
 
-    // Initialize stateMap for each known state
+    // initialize stateMap for each known state
     statesData.forEach((s) => {
       stateMap[s.id] = {
         state: s.name,
@@ -128,7 +128,7 @@ export class DashboardService {
       };
     });
 
-    // Loop through each month and fill counts
+    // loop through each month and fill counts
     for (const [monthIndex, month] of monthsRange.entries()) {
       const monthStart = startOfMonth(month);
       const monthEnd = endOfMonth(month);
@@ -161,7 +161,7 @@ export class DashboardService {
       }
     }
 
-    // Final formatted result
+    // final formatted result
     const statesStats = Object.values(stateMap);
 
     const recentTasks = await this.databaseService.task.findMany({
@@ -170,7 +170,7 @@ export class DashboardService {
       select: taskSelect(),
     });
 
-    // --- Return all dashboard data
+    // return all dashboard data
     return {
       users: {
         count: allusers,

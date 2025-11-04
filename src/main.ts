@@ -6,25 +6,27 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   app.setGlobalPrefix('api');
-  //Versioning
+  
+  // versioning
   app.enableVersioning({
     type: VersioningType.URI,
     defaultVersion: '1',
   });
 
-  // Origins
+  // origins
   const allowedOrigins = process.env.ALLOWED_ORIGINS?.split(',') || [];
 
+  // checking origins
   app.enableCors({
     origin: (origin, callback) => {
       if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true); // allow
+        callback(null, true); 
       } else {
         callback(new Error('Not allowed by CORS'));
       }
     },
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
-    credentials: true, // allow cookies/auth headers
+    credentials: true, 
   });
 
   await app.listen(process.env.PORT ?? 3000);
